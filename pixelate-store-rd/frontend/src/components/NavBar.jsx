@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import { FiShoppingCart, FiMenu, FiX } from 'react-icons/fi';
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ const NavBar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 text-white font-bold text-xl hover:text-accent transition">
-            <span>🎥</span>
-            <span>Pixelate Store</span>
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
+            <img src="/images/logo.png" alt="PIXELATE" className="h-10 w-auto" />
+            <span className="text-white font-bold text-lg hidden sm:inline">Pixelate</span>
           </Link>
 
           {/* Menu de escritorio */}
@@ -61,7 +62,7 @@ const NavBar = () => {
           {/* Carrito */}
           <div className="flex items-center space-x-4">
             <Link to="/carrito" className="relative text-white hover:text-accent transition">
-              <span className="text-2xl">🛒</span>
+              <FiShoppingCart size={24} />
               {itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                   {itemCount}
@@ -74,7 +75,7 @@ const NavBar = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden text-white"
             >
-              <span className="text-2xl">☰</span>
+              {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
           </div>
         </div>

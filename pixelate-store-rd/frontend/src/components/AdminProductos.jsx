@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../utils/api';
+import { useToast } from '../context/ToastContext';
 
 // Componente de tarjeta glassmorphism para mostrar productos
 const ProductGlassCard = ({ producto, onEdit, onDelete }) => {
@@ -98,6 +99,7 @@ const AdminProductos = () => {
     principal: null,
     secundarias: [],
   });
+  const { showSuccess, showError, showInfo } = useToast();
 
   useEffect(() => {
     cargarProductos();
@@ -163,21 +165,21 @@ const AdminProductos = () => {
     e.preventDefault();
 
     if (!form.nombre || !form.descripcion || !form.precio || !form.categoria || !form.marca) {
-      alert('❌ Faltan datos requeridos (nombre, descripción, precio, categoría, marca)');
+      showError('Faltan datos requeridos (nombre, descripción, precio, categoría, marca)');
       return;
     }
 
     // Validar imagen solo en modo crear
     if (modo === 'crear') {
       if (!form.imagen || !(form.imagen instanceof File)) {
-        alert('❌ Debes subir una imagen principal para crear un producto');
+        showError('Debes subir una imagen principal para crear un producto');
         return;
       }
     }
 
     // En modo editar, validar que haya imagen (nueva o existente)
     if (modo === 'editar' && !productoSeleccionado?.imagen && !form.imagen) {
-      alert('❌ El producto debe tener una imagen principal');
+      showError('El producto debe tener una imagen principal');
       return;
     }
 
@@ -209,17 +211,17 @@ const AdminProductos = () => {
 
       if (modo === 'crear') {
         await adminAPI.crearProducto(formData);
-        alert('✅ Producto creado exitosamente');
+        showSuccess('Producto creado exitosamente');
       } else if (modo === 'editar') {
         await adminAPI.actualizarProducto(productoSeleccionado._id, formData);
-        alert('✅ Producto actualizado exitosamente');
+        showSuccess('Producto actualizado exitosamente');
       }
 
       setModo('lista');
       resetForm();
       cargarProductos();
     } catch (err) {
-      alert('❌ Error: ' + (err.response?.data?.error || err.message));
+      showError('Error: ' + (err.response?.data?.error || err.message));
       console.error(err);
     }
   };
@@ -276,10 +278,10 @@ const AdminProductos = () => {
 
     try {
       await adminAPI.eliminarProducto(id);
-      alert('Producto eliminado ✅');
+      showSuccess('Producto eliminado exitosamente');
       cargarProductos();
     } catch (err) {
-      alert('Error: ' + (err.response?.data?.error || err.message));
+      showError('Error: ' + (err.response?.data?.error || err.message));
       console.error(err);
     }
   };
