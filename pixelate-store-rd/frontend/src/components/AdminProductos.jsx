@@ -170,10 +170,15 @@ const AdminProductos = () => {
     // Validar imagen solo en modo crear
     if (modo === 'crear') {
       if (!form.imagen || !(form.imagen instanceof File)) {
-        console.error('Imagen no válida:', form.imagen);
         alert('❌ Debes subir una imagen principal para crear un producto');
         return;
       }
+    }
+
+    // En modo editar, validar que haya imagen (nueva o existente)
+    if (modo === 'editar' && !productoSeleccionado?.imagen && !form.imagen) {
+      alert('❌ El producto debe tener una imagen principal');
+      return;
     }
 
     try {
@@ -280,12 +285,24 @@ const AdminProductos = () => {
   };
 
   const handleNuevoProducto = () => {
+    // Limpiar input file
+    const inputPrincipal = document.querySelector('input[name="imagen"]');
+    const inputSecundarias = document.querySelector('input[name="imagenes"]');
+    if (inputPrincipal) inputPrincipal.value = '';
+    if (inputSecundarias) inputSecundarias.value = '';
+
     resetForm();
     setProductoSeleccionado(null);
     setModo('crear');
   };
 
   const handleCancelar = () => {
+    // Limpiar input file
+    const inputPrincipal = document.querySelector('input[name="imagen"]');
+    const inputSecundarias = document.querySelector('input[name="imagenes"]');
+    if (inputPrincipal) inputPrincipal.value = '';
+    if (inputSecundarias) inputSecundarias.value = '';
+
     setModo('lista');
     resetForm();
   };
