@@ -44,6 +44,5 @@ const App = () => {
     </ToastProvider>
   );
 };
-};
 
 export default App;

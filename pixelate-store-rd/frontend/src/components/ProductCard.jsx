@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 const ProductCard = ({ producto, onAddToCart }) => {
-  const precioConDescuento = producto.descuento > 0
-    ? producto.precio * (1 - producto.descuento / 100)
-    : producto.precio;
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Memorizar precio para evitar recálculos innecesarios
+  const precioConDescuento = useMemo(() => {
+    return producto.descuento > 0
+      ? producto.precio * (1 - producto.descuento / 100)
+      : producto.precio;
+  }, [producto.precio, producto.descuento]);
+
+  // Callback memoizado para agregar al carrito
+  const handleAddToCart = useCallback(() => {
+    onAddToCart(producto);
+  }, [producto, onAddToCart]);
+
+  // Callback memoizado para manejar error de imagen
+  const handleImageError = useCallback((e) => {
+    e.target.src = 'https://via.placeholder.com/300x200?text=Sin+imagen';
+  }, []);
+
+  // Callback memoizado cuando la imagen carga
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(true);
+  }, []);
 
   return (
     <div className="group glass-card-hover h-full flex flex-col">
@@ -12,11 +32,16 @@ const ProductCard = ({ producto, onAddToCart }) => {
         <img
           src={`http://localhost:5002${producto.imagen}`}
           alt={producto.nombre}
-          className="w-full h-full object-cover group-hover:scale-110 transition duration-300 opacity-80 group-hover:opacity-100"
-          onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/300x200?text=Sin+imagen';
-          }}
+          loading="lazy"
+          className={`w-full h-full object-cover group-hover:scale-110 transition duration-300 ${
+            imageLoaded ? 'opacity-80 group-hover:opacity-100' : 'opacity-0'
+          }`}
+          onError={handleImageError}
+          onLoad={handleImageLoad}
         />
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-r from-dark/50 via-dark/20 to-dark/50 animate-pulse" />
+        )}
         {producto.descuento > 0 && (
           <div className="absolute top-3 right-3 bg-gradient-to-r from-accent to-accent-dark text-white px-3 py-1 rounded-full text-sm font-bold backdrop-blur-sm border border-accent/50">
             -{producto.descuento}%
@@ -77,7 +102,7 @@ const ProductCard = ({ producto, onAddToCart }) => {
 
         {/* Botón agregar al carrito */}
         <button
-          onClick={() => onAddToCart(producto)}
+          onClick={handleAddToCart}
           disabled={producto.stock === 0}
           className={`w-full mt-4 py-3 rounded-lg font-semibold transition transform ${
             producto.stock > 0
@@ -85,11 +110,21 @@ const ProductCard = ({ producto, onAddToCart }) => {
               : 'bg-gray-400/50 text-gray-600 cursor-not-allowed backdrop-blur-sm'
           }`}
         >
-          {producto.stock > 0 ? 'Agregar al Carrito 🛒' : 'Agotado ❌'}
+          {producto.stock > 0 ? 'Agregar al Carrito' : 'Agotado'}
         </button>
       </div>
     </div>
   );
 };
 
-export default ProductCard;
+// Memoizar para evitar re-renders innecesarios
+const MemoizedProductCard = React.memo(ProductCard, (prevProps, nextProps) => {
+  return (
+    prevProps.producto.id === nextProps.producto.id &&
+    prevProps.producto.stock === nextProps.producto.stock &&
+    prevProps.producto.precio === nextProps.producto.precio &&
+    prevProps.producto.descuento === nextProps.producto.descuento
+  );
+});
+
+export default MemoizedProductCard;

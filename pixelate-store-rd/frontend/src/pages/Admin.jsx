@@ -3,15 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { adminAPI } from '../utils/api';
 import { useToast } from '../context/ToastContext';
 import { ETIQUETAS_ESTADO, COLORES_ESTADO } from '../utils/constants';
-import AdminProductos from '../components/AdminProductos';
-import AdminUsuarios from '../components/AdminUsuarios';
-import AdminReportes from '../components/AdminReportes';
-import AdminConfiguracion from '../components/AdminConfiguracion';
-import { FiBarChart3, FiPackage, FiShoppingCart, FiUsers, FiSettings, FiTrendingUp, FiLogOut } from 'react-icons/fi';
+import { FiBarChart2, FiPackage, FiShoppingCart, FiUsers, FiSettings, FiTrendingUp, FiLogOut } from 'react-icons/fi';
+
+// Code splitting: lazy load admin tabs para reducir bundle inicial
+const AdminProductos = lazy(() => import('../components/AdminProductos'));
+const AdminUsuarios = lazy(() => import('../components/AdminUsuarios'));
+const AdminReportes = lazy(() => import('../components/AdminReportes'));
+const AdminConfiguracion = lazy(() => import('../components/AdminConfiguracion'));
+
+// Loading skeleton
+const TabSkeleton = () => (
+  <div className="p-8">
+    <div className="bg-gradient-to-r from-dark/30 to-dark/10 h-8 rounded animate-pulse mb-4" />
+    <div className="space-y-3">
+      {[1, 2, 3].map(i => (
+        <div key={i} className="bg-gradient-to-r from-dark/20 to-dark/10 h-16 rounded animate-pulse" />
+      ))}
+    </div>
+  </div>
+);
 
 const Admin = () => {
   const navigate = useNavigate();
-  const { showSuccess, showError, showInfo } = useToast();
+  const { showSuccess, showError, showInfo, showWarning } = useToast();
   const [estadisticas, setEstadisticas] = useState(null);
   const [pedidos, setPedidos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -104,7 +118,7 @@ const Admin = () => {
         <div className="glass-card p-8 mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-4xl font-bold text-dark flex items-center gap-2">
-              <FiBarChart3 size={40} className="text-accent" />
+              <FiBarChart2 size={40} className="text-accent" />
               Panel de Administrador
             </h1>
             <p className="text-dark/70 text-sm mt-2">Bienvenido, {localStorage.getItem('userName')}</p>
@@ -134,7 +148,7 @@ const Admin = () => {
                 : 'text-dark hover:bg-white/20'
             }`}
           >
-            <FiBarChart3 size={18} />
+            <FiBarChart2 size={18} />
             Dashboard
           </button>
           <button
@@ -341,16 +355,32 @@ const Admin = () => {
         )}
 
         {/* Productos */}
-        {activeTab === 'productos' && <AdminProductos />}
+        {activeTab === 'productos' && (
+          <Suspense fallback={<TabSkeleton />}>
+            <AdminProductos />
+          </Suspense>
+        )}
 
         {/* Usuarios */}
-        {activeTab === 'usuarios' && <AdminUsuarios />}
+        {activeTab === 'usuarios' && (
+          <Suspense fallback={<TabSkeleton />}>
+            <AdminUsuarios />
+          </Suspense>
+        )}
 
         {/* Reportes */}
-        {activeTab === 'reportes' && <AdminReportes />}
+        {activeTab === 'reportes' && (
+          <Suspense fallback={<TabSkeleton />}>
+            <AdminReportes />
+          </Suspense>
+        )}
 
         {/* Configuración */}
-        {activeTab === 'configuracion' && <AdminConfiguracion />}
+        {activeTab === 'configuracion' && (
+          <Suspense fallback={<TabSkeleton />}>
+            <AdminConfiguracion />
+          </Suspense>
+        )}
       </div>
     </div>
   );
