@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { authLimiter } = require('../server');
 
 // Generar JWT
 const generarToken = (userId, role) => {
@@ -12,8 +13,8 @@ const generarToken = (userId, role) => {
   );
 };
 
-// Login de administrador
-router.post('/login', async (req, res) => {
+// Login de administrador - con rate limiting
+router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, contraseña } = req.body;
 
