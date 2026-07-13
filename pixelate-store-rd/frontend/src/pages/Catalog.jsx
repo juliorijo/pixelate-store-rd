@@ -91,26 +91,26 @@ const Catalog = () => {
       <div className="container mx-auto px-4">
         {/* Encabezado */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Catálogo de Productos</h1>
-          <p className="text-gray-300">Encuentra el equipo fotográfico perfecto para ti</p>
+          <h1 className="text-4xl font-bold text-text-primary mb-2">Catálogo de Productos</h1>
+          <p className="text-text-secondary">Encuentra el equipo fotográfico perfectopara ti</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Sidebar de filtros */}
-          <div className="bg-secondary p-6 rounded-lg h-fit">
+          <div className="glass-card p-6 h-fit sticky top-24">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-white font-bold text-lg">Filtros</h2>
+              <h2 className="text-text-primary font-bold text-lg">Filtros</h2>
               <button
                 onClick={limpiarFiltros}
-                className="text-accent text-sm hover:underline"
+                className="text-accent hover:text-accent-bright text-sm font-medium transition"
               >
-                Limpiar
+                Limpiar todos
               </button>
             </div>
 
             {/* Búsqueda */}
             <div className="mb-6">
-              <label className="text-gray-300 font-semibold block mb-2">Buscar</label>
+              <label className="text-text-secondary font-semibold block mb-2 text-sm">Buscar Productos</label>
               <input
                 type="text"
                 placeholder="Nombre, marca..."
@@ -119,26 +119,26 @@ const Catalog = () => {
                   setBuscar(e.target.value);
                   setPagina(1);
                 }}
-                className="w-full px-3 py-2 bg-primary rounded text-white text-sm"
+                className="w-full px-3 py-2 bg-tertiary/50 border border-tertiary-light/30 rounded-lg text-text-primary text-sm focus:outline-none focus:border-accent/50 transition"
               />
             </div>
 
             {/* Categorías */}
             <div className="mb-6">
-              <label className="text-gray-300 font-semibold block mb-3">Categoría</label>
+              <label className="text-text-secondary font-semibold block mb-3 text-sm">Categoría</label>
               <div className="space-y-2">
                 <button
                   onClick={() => {
                     setCategoria('');
                     setPagina(1);
                   }}
-                  className={`block w-full text-left px-3 py-2 rounded text-sm ${
+                  className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition ${
                     categoria === '' 
                       ? 'bg-accent text-white' 
-                      : 'text-gray-300 hover:bg-primary'
+                      : 'text-text-secondary hover:bg-tertiary/70 hover:text-text-primary'
                   }`}
                 >
-                  Todas
+                  Todas las categorías
                 </button>
                 {CATEGORIAS.map((cat) => (
                   <button
@@ -147,10 +147,10 @@ const Catalog = () => {
                       setCategoria(cat);
                       setPagina(1);
                     }}
-                    className={`block w-full text-left px-3 py-2 rounded text-sm ${
+                    className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition ${
                       categoria === cat 
                         ? 'bg-accent text-white' 
-                        : 'text-gray-300 hover:bg-primary'
+                        : 'text-text-secondary hover:bg-tertiary/70 hover:text-text-primary'
                     }`}
                   >
                     {cat}
@@ -161,14 +161,14 @@ const Catalog = () => {
 
             {/* Marca */}
             <div className="mb-6">
-              <label className="text-gray-300 font-semibold block mb-3">Marca</label>
+              <label className="text-text-secondary font-semibold block mb-3 text-sm">Marca</label>
               <select
                 value={marca}
                 onChange={(e) => {
                   setMarca(e.target.value);
                   setPagina(1);
                 }}
-                className="w-full px-3 py-2 bg-primary text-white rounded text-sm"
+                className="w-full px-3 py-2 bg-tertiary/50 border border-tertiary-light/30 text-text-primary rounded-lg text-sm focus:outline-none focus:border-accent/50 transition"
               >
                 <option value="">Todas las marcas</option>
                 {marcas.map((m) => (
@@ -179,7 +179,7 @@ const Catalog = () => {
 
             {/* Precio */}
             <div className="mb-6">
-              <label className="text-gray-300 font-semibold block mb-3">Rango de Precio</label>
+              <label className="text-text-secondary font-semibold block mb-3 text-sm">Rango de Precio</label>
               <div className="space-y-2">
                 <input
                   type="number"
