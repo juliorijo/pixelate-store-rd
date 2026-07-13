@@ -3,8 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const { validateCSRF, getCsrfTokenRoute } = require('./middleware/csrf');
+const { globalLimiter, authLimiter } = require('./middleware/rateLimiter');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -21,24 +21,7 @@ app.use(helmet({
 }));
 
 // 🔒 Rate Limiting: Proteger contra brute force
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Máx 100 requests por IP por ventana
-  message: 'Demasiadas solicitudes, intenta más tarde',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-// Rate limiting más estricto para login/auth
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5, // Máx 5 intentos de login por IP en 15 min
-  message: 'Demasiados intentos de login, intenta en 15 minutos',
-  skipSuccessfulRequests: true, // No contar intentos exitosos
-});
-
-// Aplicar limiters globalmente
-app.use(limiter);
+app.use(globalLimiter);
 
 // Configurar CORS según el entorno
 const corsOptions = {
@@ -121,4 +104,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-module.exports.authLimiter = authLimiter;

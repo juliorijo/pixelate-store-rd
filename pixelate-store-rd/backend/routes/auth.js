@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { authLimiter } = require('../server');
+const { authLimiter } = require('../middleware/rateLimiter');
 
 // Generar JWT
 const generarToken = (userId, role) => {
