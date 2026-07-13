@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { adminAPI } from '../utils/api';
 import { useToast } from '../context/ToastContext';
 import { ETIQUETAS_ESTADO, COLORES_ESTADO } from '../utils/constants';
-import { FiBarChart2, FiPackage, FiShoppingCart, FiUsers, FiSettings, FiTrendingUp, FiLogOut } from 'react-icons/fi';
+import { BarChart3, Package, ShoppingCart, Users, Settings, TrendingUp, LogOut } from 'lucide-react';
 
 // Code splitting: lazy load admin tabs para reducir bundle inicial
 const AdminProductos = lazy(() => import('../components/AdminProductos'));
@@ -112,28 +112,28 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-secondary to-accent/5">
+    <div className="min-h-screen bg-gradient-to-br from-primary via-secondary to-primary/80">
       <div className="container mx-auto px-4 pt-24 pb-12">
         {/* Encabezado */}
         <div className="glass-card p-8 mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-dark flex items-center gap-2">
-              <FiBarChart2 size={40} className="text-accent" />
+            <h1 className="text-4xl font-bold text-white flex items-center gap-2">
+              <BarChart3 size={40} className="text-accent" />
               Panel de Administrador
             </h1>
-            <p className="text-dark/70 text-sm mt-2">Bienvenido, {localStorage.getItem('userName')}</p>
+            <p className="text-white/70 text-sm mt-2">Bienvenido, {localStorage.getItem('userName')}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition backdrop-blur-sm border border-red-600/50 flex items-center gap-2"
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition backdrop-blur-sm border border-red-700/50 flex items-center gap-2"
           >
-            <FiLogOut size={20} />
+            <LogOut size={20} />
             Cerrar Sesión
           </button>
         </div>
 
         {error && (
-          <div className="glass-card bg-red-500/30 border-red-500/50 text-dark p-4 mb-6">
+          <div className="glass-card bg-red-600/30 border-red-600/50 text-white p-4 mb-6">
             {error}
           </div>
         )}
@@ -145,10 +145,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'dashboard'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiBarChart2 size={18} />
+            <BarChart3 size={18} />
             Dashboard
           </button>
           <button
@@ -156,10 +156,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'pedidos'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiShoppingCart size={18} />
+            <ShoppingCart size={18} />
             Pedidos
           </button>
           <button
@@ -167,10 +167,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'productos'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiPackage size={18} />
+            <Package size={18} />
             Productos
           </button>
           <button
@@ -178,10 +178,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'usuarios'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiUsers size={18} />
+            <Users size={18} />
             Usuarios
           </button>
           <button
@@ -189,10 +189,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'reportes'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiTrendingUp size={18} />
+            <TrendingUp size={18} />
             Reportes
           </button>
           <button
@@ -200,10 +200,10 @@ const Admin = () => {
             className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'configuracion'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
-                : 'text-dark hover:bg-white/20'
+                : 'text-white hover:bg-secondary/50'
             }`}
           >
-            <FiSettings size={18} />
+            <Settings size={18} />
             Configuración
           </button>
         </div>
@@ -219,20 +219,20 @@ const Admin = () => {
               </div>
             ) : estadisticas ? (
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-6 hover:shadow-lg transition">
-                  <p className="text-dark/70 text-sm font-semibold mb-2">📸 Productos</p>
+                <div className="glass-card p-6 hover:shadow-lg transition">
+                  <p className="text-white/70 text-sm font-semibold mb-2">Productos</p>
                   <p className="text-4xl font-bold text-accent">{estadisticas.totalProductos}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-6 hover:shadow-lg transition">
-                  <p className="text-dark/70 text-sm font-semibold mb-2">📦 Pedidos</p>
+                <div className="glass-card p-6 hover:shadow-lg transition">
+                  <p className="text-white/70 text-sm font-semibold mb-2">Pedidos</p>
                   <p className="text-4xl font-bold text-accent">{estadisticas.totalPedidos}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-6 hover:shadow-lg transition">
-                  <p className="text-dark/70 text-sm font-semibold mb-2">👥 Clientes</p>
+                <div className="glass-card p-6 hover:shadow-lg transition">
+                  <p className="text-white/70 text-sm font-semibold mb-2">Clientes</p>
                   <p className="text-4xl font-bold text-accent">{estadisticas.totalClientes}</p>
                 </div>
-                <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-6 hover:shadow-lg transition">
-                  <p className="text-dark/70 text-sm font-semibold mb-2">💰 Ingresos</p>
+                <div className="glass-card p-6 hover:shadow-lg transition">
+                  <p className="text-white/70 text-sm font-semibold mb-2">Ingresos</p>
                   <p className="text-3xl font-bold text-accent">RD$ {estadisticas.ingresosTotales?.toFixed(2) || '0'}</p>
                 </div>
               </div>
@@ -251,11 +251,11 @@ const Admin = () => {
                     <div className="w-12 h-12 border-4 border-accent/30 border-t-accent rounded-full"></div>
                   </div>
                 </div>
-              ) : pedidos.length === 0 ? (
-                <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-8 text-center">
-                  <p className="text-dark font-semibold">No hay pedidos aún</p>
+               ) : pedidos.length === 0 ? (
+                 <div className="glass-card p-8 text-center">
+                  <p className="text-white font-semibold">No hay pedidos aún</p>
                 </div>
-              ) : (
+               ) : (
                 <div className="space-y-3">
                   {pedidos.map((pedido) => (
                     <button
@@ -265,10 +265,10 @@ const Admin = () => {
                         setNuevoEstado(pedido.estado);
                         setNotasAdmin(pedido.notasAdmin || '');
                       }}
-                      className={`w-full p-4 rounded-lg text-left transition backdrop-blur-md border ${
+                      className={`w-full p-4 rounded-lg text-left transition border ${
                         pedidoSeleccionado?._id === pedido._id
-                          ? 'bg-accent/20 border-accent text-accent'
-                          : 'bg-white/40 border-white/20 text-dark hover:border-accent/50'
+                          ? 'glass-card border-accent bg-accent/10 text-white'
+                          : 'glass-card border-secondary/50 text-white hover:border-accent/50'
                       }`}
                     >
                       <div className="flex justify-between items-start">
@@ -289,39 +289,39 @@ const Admin = () => {
 
             {/* Detalles del pedido */}
             {pedidoSeleccionado && (
-              <div className="backdrop-blur-md bg-white/40 border border-white/20 rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-dark mb-4">📋 Detalles</h3>
+              <div className="glass-card p-6">
+                <h3 className="text-lg font-bold text-white mb-4">Detalles</h3>
 
-                <div className="space-y-4 mb-6 pb-6 border-b border-white/20">
+                <div className="space-y-4 mb-6 pb-6 border-b border-accent/20">
                   <div>
-                    <p className="text-dark/70 text-sm font-semibold">Número</p>
-                    <p className="text-dark font-semibold">{pedidoSeleccionado.numeroPedido}</p>
+                    <p className="text-white/70 text-sm font-semibold">Número</p>
+                    <p className="text-white font-semibold">{pedidoSeleccionado.numeroPedido}</p>
                   </div>
 
                   <div>
-                    <p className="text-dark/70 text-sm font-semibold">Cliente</p>
-                    <p className="text-dark font-semibold">{pedidoSeleccionado.nombre}</p>
-                    <p className="text-dark/70 text-sm">{pedidoSeleccionado.email}</p>
+                    <p className="text-white/70 text-sm font-semibold">Cliente</p>
+                    <p className="text-white font-semibold">{pedidoSeleccionado.nombre}</p>
+                    <p className="text-white/70 text-sm">{pedidoSeleccionado.email}</p>
                   </div>
 
                   <div>
-                    <p className="text-dark/70 text-sm font-semibold">Entrega</p>
-                    <p className="text-dark font-semibold">{pedidoSeleccionado.direccion}</p>
+                    <p className="text-white/70 text-sm font-semibold">Entrega</p>
+                    <p className="text-white font-semibold">{pedidoSeleccionado.direccion}</p>
                   </div>
 
                   <div>
-                    <p className="text-dark/70 text-sm font-semibold">Total</p>
+                    <p className="text-white/70 text-sm font-semibold">Total</p>
                     <p className="text-accent font-bold text-xl">RD$ {pedidoSeleccionado.total.toFixed(2)}</p>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <div>
-                    <label className="text-dark/70 text-sm font-semibold block mb-2">Cambiar Estado</label>
+                    <label className="text-white/70 text-sm font-semibold block mb-2">Cambiar Estado</label>
                     <select
                       value={nuevoEstado}
                       onChange={(e) => setNuevoEstado(e.target.value)}
-                      className="w-full px-3 py-2 bg-white/80 text-dark rounded-lg border-2 border-accent/30 focus:border-accent outline-none transition backdrop-blur-sm"
+                      className="w-full px-3 py-2 bg-secondary/80 text-white rounded-lg border-2 border-accent/30 focus:border-accent outline-none transition backdrop-blur-sm"
                     >
                       <option value="pendiente">Pendiente</option>
                       <option value="confirmado">Confirmado</option>
@@ -333,20 +333,20 @@ const Admin = () => {
                   </div>
 
                   <div>
-                    <label className="text-dark/70 text-sm font-semibold block mb-2">Notas</label>
+                    <label className="text-white/70 text-sm font-semibold block mb-2">Notas</label>
                     <textarea
                       value={notasAdmin}
                       onChange={(e) => setNotasAdmin(e.target.value)}
-                      className="w-full px-3 py-2 bg-white/80 text-dark rounded-lg border-2 border-accent/30 focus:border-accent outline-none transition backdrop-blur-sm"
+                      className="w-full px-3 py-2 bg-secondary/80 text-white rounded-lg border-2 border-accent/30 focus:border-accent outline-none transition backdrop-blur-sm"
                       rows="3"
                     ></textarea>
                   </div>
 
                   <button
                     onClick={handleActualizarEstado}
-                    className="w-full bg-accent hover:bg-accent-dark text-white py-2 rounded-lg font-bold transition hover:shadow-lg"
+                    className="w-full bg-accent hover:bg-accent-bright text-white py-2 rounded-lg font-bold transition hover:shadow-lg"
                   >
-                    💾 Guardar
+                    Guardar
                   </button>
                 </div>
               </div>

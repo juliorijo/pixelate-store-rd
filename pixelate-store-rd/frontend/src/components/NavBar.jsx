@@ -30,8 +30,8 @@ const NavBar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition group">
-            <img src="/images/logo.png" alt="PIXELATE" className="h-10 w-auto" />
-            <span className="text-text-primary font-bold text-lg hidden sm:inline group-hover:text-accent transition">
+            <img src="/logo.png" alt="PIXELATE" className="h-10 w-auto" />
+            <span className="text-white font-bold text-lg hidden sm:inline group-hover:text-accent transition">
               Pixelate
             </span>
           </Link>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo primario oscuro -->
+  <rect width="512" height="512" fill="#0f1117"/>
+
+  <!-- Logo de Pixelate con rojo oscuro (#8b1a1a) -->
+  <!-- Círculo envolvente con apertura tipo lente -->
+  <g transform="translate(256,256)">
+	<!-- Segmentos del círculo (tipo lente de cámara) -->
+	<path d="M 0,-150 A 150,150 0 0,1 106,-106 A 150,150 0 0,1 150,0 A 150,150 0 0,1 106,106" 
+		  fill="none" stroke="#8b1a1a" stroke-width="35" stroke-linecap="round"/>
+	<path d="M 0,-150 A 150,150 0 0,0 -106,-106 A 150,150 0 0,0 -150,0 A 150,150 0 0,0 -106,106" 
+		  fill="none" stroke="#8b1a1a" stroke-width="35" stroke-linecap="round"/>
+
+	<!-- Pixeles (cuadrados) del lado izquierdo -->
+	<!-- Fila 1 (arriba) -->
+	<rect x="-90" y="-80" width="20" height="20" fill="#8b1a1a"/>
+	<!-- Fila 2 -->
+	<rect x="-120" y="-50" width="20" height="20" fill="#8b1a1a"/>
+	<rect x="-90" y="-50" width="20" height="20" fill="#8b1a1a"/>
+	<!-- Fila 3 -->
+	<rect x="-120" y="-20" width="20" height="20" fill="#8b1a1a"/>
+	<rect x="-90" y="-20" width="20" height="20" fill="#8b1a1a"/>
+	<!-- Fila 4 -->
+	<rect x="-120" y="10" width="20" height="20" fill="#8b1a1a"/>
+	<rect x="-90" y="10" width="20" height="20" fill="#8b1a1a"/>
+	<!-- Fila 5 (abajo) -->
+	<rect x="-90" y="40" width="20" height="20" fill="#8b1a1a"/>
+  </g>
+</svg>
