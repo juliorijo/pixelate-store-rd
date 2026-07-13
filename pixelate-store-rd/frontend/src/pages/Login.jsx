@@ -52,7 +52,10 @@ const Login = () => {
 
       {/* Contenido */}
       <div className="relative z-10 glass-card bg-white/90 p-8 max-w-md w-full">
-        <h1 className="text-4xl font-bold text-dark mb-2 text-center">🎥 Pixelate</h1>
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <img src="/images/logo.png" alt="PIXELATE" className="h-20 w-auto" />
+        </div>
         <p className="text-dark/70 text-center mb-8 font-semibold">Inicia sesión en tu cuenta</p>
 
         {/* Selector de tipo de login */}
