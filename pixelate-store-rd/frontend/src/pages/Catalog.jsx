@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { productosAPI } from '../utils/api';
 import { CATEGORIAS } from '../utils/constants';
 import { useCart } from '../hooks/useCart';
+import { debounce } from '../utils/performance';
 
 const Catalog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,9 +24,20 @@ const Catalog = () => {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
+  // Debounced search para evitar llamadas excesivas
+  const [buscarDebounced, setBuscarDebounced] = useState(buscar);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBuscarDebounced(buscar);
+    }, 500); // 500ms de espera antes de ejecutar búsqueda
+
+    return () => clearTimeout(timer);
+  }, [buscar]);
+
   useEffect(() => {
     cargarDatos();
-  }, [categoria, marca, precioMin, precioMax, buscar, pagina]);
+  }, [categoria, marca, precioMin, precioMax, buscarDebounced, pagina]);
 
   const cargarDatos = async () => {
     try {
@@ -37,7 +49,7 @@ const Catalog = () => {
         marca: marca || undefined,
         precioMin: precioMin || undefined,
         precioMax: precioMax || undefined,
-        buscar: buscar || undefined,
+        buscar: buscarDebounced || undefined,
         pagina: pagina,
       });
 
