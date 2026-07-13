@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 const { adminAuth } = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const { upload, compressImages } = require('../middleware/upload');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
 const User = require('../models/User');
@@ -13,7 +13,7 @@ const User = require('../models/User');
 // ==================== PRODUCTOS ====================
 
 // Crear nuevo producto
-router.post('/productos', adminAuth, upload, async (req, res) => {
+router.post('/productos', adminAuth, upload, compressImages, async (req, res) => {
   try {
     const { nombre, descripcion, precio, precioOriginal, categoria, marca, stock, especificaciones, descuento, destacado } = req.body;
 
@@ -79,7 +79,7 @@ router.get('/productos/:id', adminAuth, async (req, res) => {
 });
 
 // Actualizar producto
-router.put('/productos/:id', adminAuth, upload, async (req, res) => {
+router.put('/productos/:id', adminAuth, upload, compressImages, async (req, res) => {
   try {
     const { nombre, descripcion, precio, precioOriginal, categoria, marca, stock, especificaciones, descuento, destacado, activo } = req.body;
 
