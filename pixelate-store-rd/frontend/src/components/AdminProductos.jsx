@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { adminAPI } from '../utils/api';
 import { useToast } from '../context/ToastContext';
 
-// Componente de tarjeta glassmorphism para mostrar productos
-const ProductGlassCard = ({ producto, onEdit, onDelete }) => {
+// Componente de tarjeta glassmorphism para mostrar productos - MEMOIZADO
+const ProductGlassCard = memo(({ producto, onEdit, onDelete }) => {
   return (
     <div className="group glass-card-hover h-full flex flex-col">
       {/* Imagen de fondo difuminada */}
@@ -73,9 +73,14 @@ const ProductGlassCard = ({ producto, onEdit, onDelete }) => {
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  return prevProps.producto._id === nextProps.producto._id &&
+         prevProps.producto.nombre === nextProps.producto.nombre;
+});
 
-const AdminProductos = () => {
+ProductGlassCard.displayName = 'ProductGlassCard';
+
+const AdminProductos = memo(() => {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState('');
@@ -720,6 +725,8 @@ const AdminProductos = () => {
       )}
     </div>
   );
-};
+});
+
+AdminProductos.displayName = 'AdminProductos';
 
 export default AdminProductos;

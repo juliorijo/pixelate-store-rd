@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminAPI } from '../utils/api';
+import { useToast } from '../context/ToastContext';
 import { ETIQUETAS_ESTADO, COLORES_ESTADO } from '../utils/constants';
 import AdminProductos from '../components/AdminProductos';
+import AdminUsuarios from '../components/AdminUsuarios';
+import AdminReportes from '../components/AdminReportes';
+import AdminConfiguracion from '../components/AdminConfiguracion';
+import { FiBarChart3, FiPackage, FiShoppingCart, FiUsers, FiSettings, FiTrendingUp, FiLogOut } from 'react-icons/fi';
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { showSuccess, showError, showInfo } = useToast();
   const [estadisticas, setEstadisticas] = useState(null);
   const [pedidos, setPedidos] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -64,7 +70,7 @@ const Admin = () => {
 
   const handleActualizarEstado = async () => {
     if (!nuevoEstado) {
-      alert('Selecciona un estado');
+      showWarning('Selecciona un estado');
       return;
     }
 
@@ -74,13 +80,13 @@ const Admin = () => {
         nuevoEstado,
         notasAdmin
       );
-      alert('Pedido actualizado ✅');
+      showSuccess('Pedido actualizado exitosamente');
       setPedidoSeleccionado(null);
       setNuevoEstado('');
       setNotasAdmin('');
       cargarPedidos();
     } catch (err) {
-      alert('Error al actualizar pedido');
+      showError('Error al actualizar pedido');
       console.error(err);
     }
   };
@@ -97,14 +103,18 @@ const Admin = () => {
         {/* Encabezado */}
         <div className="glass-card p-8 mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-dark">🎚️ Panel de Administrador</h1>
+            <h1 className="text-4xl font-bold text-dark flex items-center gap-2">
+              <FiBarChart3 size={40} className="text-accent" />
+              Panel de Administrador
+            </h1>
             <p className="text-dark/70 text-sm mt-2">Bienvenido, {localStorage.getItem('userName')}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition backdrop-blur-sm border border-red-600/50"
+            className="bg-red-500/80 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold hover:shadow-lg transition backdrop-blur-sm border border-red-600/50 flex items-center gap-2"
           >
-            🚪 Cerrar Sesión
+            <FiLogOut size={20} />
+            Cerrar Sesión
           </button>
         </div>
 
@@ -114,37 +124,73 @@ const Admin = () => {
           </div>
         )}
 
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8 glass-card p-2">
+        {/* Tabs - Mejorado */}
+        <div className="flex gap-2 mb-8 glass-card p-2 overflow-x-auto">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`px-6 py-3 font-bold rounded-lg transition-all duration-300 ${
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'dashboard'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
                 : 'text-dark hover:bg-white/20'
             }`}
           >
-            📊 Dashboard
+            <FiBarChart3 size={18} />
+            Dashboard
           </button>
           <button
             onClick={() => setActiveTab('pedidos')}
-            className={`px-6 py-3 font-bold rounded-lg transition-all duration-300 ${
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'pedidos'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
                 : 'text-dark hover:bg-white/20'
             }`}
           >
-            📦 Pedidos
+            <FiShoppingCart size={18} />
+            Pedidos
           </button>
           <button
             onClick={() => setActiveTab('productos')}
-            className={`px-6 py-3 font-bold rounded-lg transition-all duration-300 ${
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'productos'
                 ? 'bg-accent text-white shadow-lg shadow-accent/30'
                 : 'text-dark hover:bg-white/20'
             }`}
           >
-            🎥 Productos
+            <FiPackage size={18} />
+            Productos
+          </button>
+          <button
+            onClick={() => setActiveTab('usuarios')}
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'usuarios'
+                ? 'bg-accent text-white shadow-lg shadow-accent/30'
+                : 'text-dark hover:bg-white/20'
+            }`}
+          >
+            <FiUsers size={18} />
+            Usuarios
+          </button>
+          <button
+            onClick={() => setActiveTab('reportes')}
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'reportes'
+                ? 'bg-accent text-white shadow-lg shadow-accent/30'
+                : 'text-dark hover:bg-white/20'
+            }`}
+          >
+            <FiTrendingUp size={18} />
+            Reportes
+          </button>
+          <button
+            onClick={() => setActiveTab('configuracion')}
+            className={`px-4 py-3 font-bold rounded-lg transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'configuracion'
+                ? 'bg-accent text-white shadow-lg shadow-accent/30'
+                : 'text-dark hover:bg-white/20'
+            }`}
+          >
+            <FiSettings size={18} />
+            Configuración
           </button>
         </div>
 
@@ -296,6 +342,15 @@ const Admin = () => {
 
         {/* Productos */}
         {activeTab === 'productos' && <AdminProductos />}
+
+        {/* Usuarios */}
+        {activeTab === 'usuarios' && <AdminUsuarios />}
+
+        {/* Reportes */}
+        {activeTab === 'reportes' && <AdminReportes />}
+
+        {/* Configuración */}
+        {activeTab === 'configuracion' && <AdminConfiguracion />}
       </div>
     </div>
   );
